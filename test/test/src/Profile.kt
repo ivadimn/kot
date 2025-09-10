@@ -1,0 +1,17 @@
+fun main() {
+    println("Введите ваше имя: ")
+    val name = readln()
+    println("Введите ваш возраст: ")
+    val age = readln()
+    println("Введите ваш пол: ")
+    val sex = readln()
+    println("Введите ваш рост: ")
+    val length = readln()
+    println("Введите ваш вес: ")
+    val weight = readln()
+    println("Ваше имя: " + name)
+    println("Ваш возраст: " + age)
+    println("Ваше пол: " + sex)
+    println("Ваше рост: " + length)
+    println("Ваше вес: " + weight)
+}
