@@ -1,11 +1,9 @@
 fun main() {
-    val number = readln().toInt()
+    val numbers = readln().split(" ")
     var summa = 0
-    var localNumber = 1
-    while (localNumber <= number)
+    for (number in numbers)
     {
-        summa += localNumber++
-        //localNumber++
+        summa += number.toInt()
     }
-    println("Сумма чисел от 1 до $number равна $summa")
+    println(summa)
 }
