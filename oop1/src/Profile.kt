@@ -23,4 +23,7 @@ fun main() {
 
     println("1 Имя: ${first.name}\nВозраст: ${first.age}\nРост: ${first.height}\nВес: ${first.weight}")
     println("1 Имя: ${second.name}\nВозраст: ${second.age}\nРост: ${second.height}\nВес: ${second.weight}")
+
+    first.run()
+    second.run()
 }
