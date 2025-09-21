@@ -1,14 +1,21 @@
-class Car {
-    var brand: String = ""
-    var model: String = ""
-    var enginePower : Int = 0
-    var bodyColor: String = ""
+import corporation.Assistant
+import corporation.Consultant
 
-    fun init(brand: String, model: String, enginePower: Int, bodyColor: String) {
+class Car {
+    val brand: String
+    val model: String
+    val enginePower : Int
+    val bodyColor: String
+
+    constructor(brand: String, model: String, enginePower: Int, bodyColor: String) {
         this.brand = brand
         this.model = model
         this.enginePower = enginePower
         this.bodyColor = bodyColor
+    }
+
+    fun printInfo() {
+        println("$brand $model $enginePower л.с. $bodyColor")
     }
 
     fun drive() {
