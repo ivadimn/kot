@@ -1,15 +1,16 @@
 package corporation
 
 fun main() {
-    val director = Director("Vadim", 60)
-    val assistant = corporation.Assistant("Helen", 25)
-    val consultant = Consultant("Pete")
-    val accountant = Accountant("Elvira", 50)
-    //val employees = listOf<Employee>(director, assistant, consultant)
-    val employees : List<Employee> = arrayListOf(director, assistant, consultant, accountant)
+
+    val accountant = Accountant(4, "Elvira", 50)
+    //accountant.work()
+
+    val employees = accountant.loadAllEmployees()
 
     for (employee in employees) {
-        employee.work()
+        if (employee is Supplier)
+            employee.supply()
+        if (employee is Cleaner)
+            employee.clean()
     }
-
 }

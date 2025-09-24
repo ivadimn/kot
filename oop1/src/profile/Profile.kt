@@ -25,8 +25,8 @@ fun main() {
     val first = Person(firstName, firstAge, firstHeight, firstWeight)
     val second = Person(secondName, secondAge, secondHeight, secondWeight)
 
-    println("1 Имя: ${first.name}\nВозраст: ${first.age}\nРост: ${first.height}\nВес: ${first.weight}")
-    println("1 Имя: ${second.name}\nВозраст: ${second.age}\nРост: ${second.height}\nВес: ${second.weight}")
+    first.printInfo()
+    second.printInfo()
 
     first.run()
     second.run()

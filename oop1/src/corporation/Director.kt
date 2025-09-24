@@ -1,12 +1,21 @@
 package corporation
 
 class Director(
+    id: Int,
     name: String,
     age: Int
-) : Employee(name = name, age = age)
+) : Employee(id = id, name = name, age = age, Position.DIRECTOR), Supplier
 {
+    override fun supply() {
+        println("Моя должность ${position.title}. Я поставляю товары ...")
+    }
+
     override fun work() {
         println("Я пью кофе...")
+    }
+
+    override fun printInfo() {
+        println("Должность: ${this.position} Табельный номер: ${this.id}, Имя: ${this.name}, Возраст: ${this.age}")
     }
 
     fun getConsultantToWork(consultant: Consultant) {

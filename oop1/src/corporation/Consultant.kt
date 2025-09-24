@@ -3,12 +3,21 @@ package corporation
 import kotlin.random.Random
 
 class Consultant(
+    id: Int,
     name : String,
     age : Int = 0
-) : Employee(name = name, age = age)
+) : Employee(id = id, name = name, age = age, Position.CONSULTANT), Cleaner
 {
+    override fun clean() {
+        println("Моя должность Консультант. Я убираю помещение...")
+    }
+
     override fun work() {
         println("Я консультирую клиентов...")
+    }
+
+    override fun printInfo() {
+        println("Должность: ${this.position} Табельный номер: ${this.id}, Имя: ${this.name}, Возраст: ${this.age}")
     }
 
     fun hello() {

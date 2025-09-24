@@ -2,6 +2,7 @@ package cats
 
 fun main() {
     val cat = Cat("Sam")
-    println(cat.name)
-    println(cat.legsCount)
-}
+    val lion = Leon(20)
+    cat.eat()
+    lion.eat()
+  }

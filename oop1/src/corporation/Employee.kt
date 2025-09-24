@@ -1,10 +1,12 @@
 package corporation
 
-open class Employee(
+abstract class Employee(
+    val id: Int,
     val name: String,
-    val age: Int = 0
+    val age: Int,
+    val position: Position
 ) {
-    open fun work() {
-        println("Я работаю...")
-    }
+    abstract fun work()
+
+    abstract fun printInfo()
 }

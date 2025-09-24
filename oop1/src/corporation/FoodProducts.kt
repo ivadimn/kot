@@ -5,10 +5,10 @@ class FoodProducts (
     brand: String,
     price: Int,
     val energyValue : Int
-) : ProductCard(name, brand, price){
+) : ProductCard(name, brand, price, ProductType.FOOD){
 
     override fun printInfo() {
-        super.printInfo()
+        print("Тип продукта: ${productType.name}, Наименование: ${this.name}, Брэнд: ${this.brand}, Цена: ${this.price}")
         println("Энергетическая ценность: ${this.energyValue}")
     }
 }
