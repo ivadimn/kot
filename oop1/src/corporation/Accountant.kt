@@ -19,10 +19,6 @@ class Accountant(
         println("Моя должность бухгалтер. Я убираю помещение...")
     }
 
-    override fun printInfo() {
-        println("Должность: ${this.position} Табельный номер: ${this.id}, Имя: ${this.name}, Возраст: ${this.age}")
-    }
-
     override fun work() {
         val operationCode = OperationCode.entries
         while (true) {

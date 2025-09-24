@@ -18,10 +18,6 @@ class Assistant(
         println("Я приношу кофе...")
     }
 
-    override fun printInfo() {
-        println("Должность: ${this.position} Табельный номер: ${this.id}, Имя: ${this.name}, Возраст: ${this.age}")
-    }
-
     fun bringCoffee(drinkName: String = "Cappuccino", count: Int = 1) : String {
         repeat(count) {
             println("Get up")

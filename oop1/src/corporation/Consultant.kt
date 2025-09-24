@@ -16,10 +16,6 @@ class Consultant(
         println("Я консультирую клиентов...")
     }
 
-    override fun printInfo() {
-        println("Должность: ${this.position} Табельный номер: ${this.id}, Имя: ${this.name}, Возраст: ${this.age}")
-    }
-
     fun hello() {
         print("Привет меня зовут $name.")
         if (age > 0)

@@ -7,8 +7,10 @@ class Household(
     val power : Int
 ) : ProductCard(name, brand, price, ProductType.HOUSEHOLD){
 
-    override fun printInfo() {
-        print("Тип продукта: ${productType.name}, Наименование: ${this.name}, Брэнд: ${this.brand}, Цена: ${this.price}")
-        println("Мощность: ${this.power}")
+
+
+    override fun toString(): String {
+        return "Тип продукта: ${productType.name}, Наименование: ${this.name}, Брэнд: ${this.brand}, " +
+                "Цена: ${this.price}, Мощность: ${this.power}"
     }
 }

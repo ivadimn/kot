@@ -14,10 +14,6 @@ class Director(
         println("Я пью кофе...")
     }
 
-    override fun printInfo() {
-        println("Должность: ${this.position} Табельный номер: ${this.id}, Имя: ${this.name}, Возраст: ${this.age}")
-    }
-
     fun getConsultantToWork(consultant: Consultant) {
         val count = consultant.serveCustomers()
         println("corporation.Consultant ${consultant.name} served $count customers")
