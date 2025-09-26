@@ -3,3 +3,6 @@ Milk%House i willage%75%250%FOOD
 туфли%Machado%10000%39.0%SHOE
 Fen%Rowent%6000%3500%HOUSEHOLD
 Сыр%Швецария%1400%380%FOOD
+Вентилятор%VCompany%2500%1000%HOUSEHOLD
+Кроссовки%Adidas%16000%43.0%SHOE
+Грудинка%Бородино%1000%400%FOOD

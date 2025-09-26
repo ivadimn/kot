@@ -3,9 +3,14 @@ package corporation
 class Assistant(
     id: Int,
     name: String,
-    age: Int = 0
-) : Employee(id = id, name = name, age = age, Position.ASSISTANT), Supplier, Cleaner
+    age: Int = 0,
+    salary : Int = 15000
+) : Employee(id = id, name = name, age = age, salary = salary, Position.ASSISTANT), Supplier, Cleaner
 {
+    override fun copy(age: Int, salary: Int): Assistant {
+        return Assistant(this.id, this.name, age, salary)
+    }
+
     override fun supply() {
         println("Моя должность ${position.title}. Я поставляю товары ...")
     }

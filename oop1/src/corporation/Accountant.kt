@@ -5,11 +5,15 @@ import java.io.File
 class Accountant(
     id: Int,
     name : String,
-    age : Int = 0
-) : Employee(id = id, name = name, age = age, Position.ACCOUNTANT), Supplier, Cleaner
+    age : Int = 0,
+    salary : Int = 15000
+) : Employee(id = id, name = name, age = age, salary = salary, Position.ACCOUNTANT), Supplier, Cleaner
 {
-    val file = File("product_cards.txt")
-    val shtat = File("employees.txt")
+    val productRepository = ProductRepository
+
+    override fun copy(age: Int, salary: Int): Accountant {
+        return Accountant(this.id, this.name, age, salary)
+    }
 
     override fun supply() {
         println("Моя должность ${position.title}. Я поставляю товары ...")
@@ -29,29 +33,27 @@ class Accountant(
             print("$> ")
             val index: Int = readln().toInt()
             when(operationCode[index]) {
-                OperationCode.EXIT -> break
+                OperationCode.EXIT -> {
+                    productRepository.saveChanges()
+                    break
+                }
                 OperationCode.REGISTER_NEW_ITEM -> registerNewItem()
                 OperationCode.SHOW_ALL_ITEMS -> showAllItems()
                 OperationCode.REMOVE_ITEM -> removeItem()
                 OperationCode.REGISTER_NEW_EMPLOYEE -> registerNewEmployee()
                 OperationCode.FIRE_EMPLOYEE -> fireEmployee()
                 OperationCode.SHOW_ALL_EMPLOYEES -> showAllEmployees()
+                OperationCode.CHANGE_SALARY -> TODO()
+                OperationCode.CHANGE_AGE -> TODO()
             }
         }
     }
+
+
     fun removeItem() {
-        val items = loadAllItems()
         print("Введите наименование продукта для удаления: ")
         val name = readln()
-        for ((index, item) in items.withIndex()) {
-            if (name == item.name) {
-                items.removeAt(index)
-                break
-            }
-        }
-        file.writeText("")
-        for (item in items)
-            saveItem(item)
+        productRepository.removeItem(name)
     }
 
     fun fireEmployee() {
@@ -69,74 +71,10 @@ class Accountant(
             saveEmployee(employee)
     }
 
-    fun saveItem(item: ProductCard) {
-        file.appendText("${item.name}%${item.brand}%${item.price}")
-        when (item) {
-            is FoodProducts -> file.appendText("%${item.energyValue}")
-            is Household -> file.appendText("%${item.power}")
-            is Shoes -> file.appendText("%${item.size}")
-        }
-        file.appendText("%${item.productType}\n")
-    }
+
 
     fun saveEmployee(employee: Employee) {
         shtat.appendText("${employee.id}%${employee.name}%${employee.age}%${employee.position}\n")
-    }
-
-
-    fun loadAllItems() : MutableList<ProductCard> {
-        val cards = mutableListOf<ProductCard>()
-        if (!file.exists())
-            return cards
-        val lines = file.readLines()
-        for (line in lines) {
-            val properties = line.split("%")
-            val productType = ProductType.valueOf(properties[properties.size - 1])
-            val product = when(productType) {
-                ProductType.FOOD -> {
-                    FoodProducts(properties[0],
-                        properties[1],
-                        properties[2].toInt(),
-                        properties[3].toInt())
-                }
-                ProductType.HOUSEHOLD -> {
-                    Household(properties[0],
-                        properties[1],
-                        properties[2].toInt(),
-                        properties[3].toInt())
-                }
-                ProductType.SHOE -> {
-                    Shoes(properties[0],
-                        properties[1],
-                        properties[2].toInt(),
-                        properties[3].toFloat())
-                }
-            }
-            cards.add(product)
-        }
-        return cards
-    }
-
-    fun loadAllEmployees() : MutableList<Employee> {
-        val employees = mutableListOf<Employee>()
-        if (!shtat.exists())
-            return employees
-        val lines = shtat.readLines()
-        for (line in lines) {
-            val properties = line.split("%")
-            val position = Position.valueOf(properties[properties.size - 1])
-            val id = properties[0].toInt()
-            val name = properties[1]
-            val age = properties[2].toInt()
-            val employee = when(position) {
-                Position.DIRECTOR -> Director(id, name, age)
-                Position.ACCOUNTANT -> Accountant(id, name, age)
-                Position.ASSISTANT -> Assistant(id, name, age)
-                Position.CONSULTANT -> Consultant(id, name, age)
-            }
-            employees.add(employee)
-        }
-        return employees
     }
 
     fun registerNewItem ()  {
@@ -170,7 +108,7 @@ class Accountant(
                 Shoes(name, brand, price, size)
             }
         }
-        saveItem(item)
+        productRepository.saveItem(item)
     }
 
     fun registerNewEmployee() {
@@ -197,7 +135,7 @@ class Accountant(
     }
 
     fun showAllItems() {
-        val items = loadAllItems()
+        val items = productRepository.items
         for (item in items)
             item.printInfo()
 
