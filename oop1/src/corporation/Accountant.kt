@@ -10,6 +10,7 @@ class Accountant(
 ) : Employee(id = id, name = name, age = age, salary = salary, Position.ACCOUNTANT), Supplier, Cleaner
 {
     val productRepository = ProductRepository
+    val employeesRepository = EmployeesRepository
 
     override fun copy(age: Int, salary: Int): Accountant {
         return Accountant(this.id, this.name, age, salary)
@@ -35,6 +36,7 @@ class Accountant(
             when(operationCode[index]) {
                 OperationCode.EXIT -> {
                     productRepository.saveChanges()
+                    employeesRepository.saveChanges()
                     break
                 }
                 OperationCode.REGISTER_NEW_ITEM -> registerNewItem()
@@ -43,8 +45,8 @@ class Accountant(
                 OperationCode.REGISTER_NEW_EMPLOYEE -> registerNewEmployee()
                 OperationCode.FIRE_EMPLOYEE -> fireEmployee()
                 OperationCode.SHOW_ALL_EMPLOYEES -> showAllEmployees()
-                OperationCode.CHANGE_SALARY -> TODO()
-                OperationCode.CHANGE_AGE -> TODO()
+                OperationCode.CHANGE_SALARY -> changeSalary()
+                OperationCode.CHANGE_AGE -> changeAge()
             }
         }
     }
@@ -57,25 +59,11 @@ class Accountant(
     }
 
     fun fireEmployee() {
-        val employees = loadAllEmployees()
-        print("Введите табельный номер для удаления: ")
+        print("Введите табельный номер для увольнения: ")
         val id = readln().toInt()
-        for ((index, employee) in employees.withIndex()) {
-            if (id == employee.id) {
-                employees.removeAt(index)
-                break
-            }
-        }
-        shtat.writeText("")
-        for (employee in employees)
-            saveEmployee(employee)
+        employeesRepository.fireEmployee(id);
     }
 
-
-
-    fun saveEmployee(employee: Employee) {
-        shtat.appendText("${employee.id}%${employee.name}%${employee.age}%${employee.position}\n")
-    }
 
     fun registerNewItem ()  {
         val productTypes = ProductType.entries
@@ -108,7 +96,7 @@ class Accountant(
                 Shoes(name, brand, price, size)
             }
         }
-        productRepository.saveItem(item)
+        productRepository.addNewItem(item)
     }
 
     fun registerNewEmployee() {
@@ -125,13 +113,15 @@ class Accountant(
         val name = readln()
         print("Введите возраст: ")
         val age = readln().toInt()
+        print("Введите зарплату: ")
+        val salary = readln().toInt()
         val employee = when(positions[index]) {
-            Position.DIRECTOR -> Director(id, name, age)
-            Position.ACCOUNTANT -> Accountant(id, name, age)
-            Position.ASSISTANT -> Assistant(id, name, age)
-            Position.CONSULTANT -> Consultant(id, name, age)
+            Position.DIRECTOR -> Director(id, name, age, salary)
+            Position.ACCOUNTANT -> Accountant(id, name, age, salary)
+            Position.ASSISTANT -> Assistant(id, name, age, salary)
+            Position.CONSULTANT -> Consultant(id, name, age, salary)
         }
-        saveEmployee(employee)
+        employeesRepository.addNewEmployee(employee)
     }
 
     fun showAllItems() {
@@ -141,8 +131,23 @@ class Accountant(
 
     }
     fun showAllEmployees() {
-        val employees = loadAllEmployees()
+        val employees = employeesRepository.employees
         for (employee in employees)
             employee.printInfo()
+    }
+    fun changeSalary() {
+        print("Введите табельный номер: ")
+        val id = readln().toInt()
+        print("Введите новую зарплату: ")
+        val salary = readln().toInt()
+        employeesRepository.changeSalary(id, salary)
+    }
+
+    fun changeAge() {
+        print("Введите табельный номер: ")
+        val id = readln().toInt()
+        print("Введите новую зарплату: ")
+        val age = readln().toInt()
+        employeesRepository.changeAge(id, age)
     }
 }

@@ -56,7 +56,7 @@ object ProductRepository {
         file.writeText(content.toString())
     }
 
-    fun saveItem(item: ProductCard) {
+    fun addNewItem(item: ProductCard) {
         _items.add(item)
     }
 

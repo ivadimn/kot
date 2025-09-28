@@ -14,6 +14,7 @@ abstract class Employee(
     fun printInfo() {
         println(this)
     }
+
     override fun toString(): String {
         return "Должность: ${this.position} Табельный номер: ${this.id}, " +
                 "Имя: ${this.name}, Возраст: ${this.age} Зарплата: ${this.salary}"
