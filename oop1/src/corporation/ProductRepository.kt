@@ -9,8 +9,8 @@ object ProductRepository {
     val items : List<ProductCard>
         get() = _items.toList()
 
-    fun loadAllItems() : MutableList<ProductCard> {
-        val cards = mutableListOf<ProductCard>()
+    fun loadAllItems() : MutableSet<ProductCard> {
+        val cards = mutableSetOf<ProductCard>()
         if (!file.exists())
             return cards
         val lines = file.readLines()
@@ -61,9 +61,9 @@ object ProductRepository {
     }
 
     fun removeItem(name : String) {
-        for ((index, item) in _items.withIndex()) {
+        for (item in _items) {
             if (name == item.name) {
-                _items.removeAt(index)
+                _items.remove(item)
                 break
             }
         }

@@ -1,15 +1,10 @@
 package corporation
 
-class Shoes(
-    name: String,
-    brand: String,
-    price: Int,
+data class Shoes(
+    override val name: String,
+    override val brand: String,
+    override val price: Int,
     val size : Float
 ) : ProductCard(name, brand, price, ProductType.SHOE){
 
-
-    override fun toString(): String {
-        return "Тип продукта: ${productType.name}, Наименование: ${this.name}, Брэнд: ${this.brand}, " +
-                "Цена: ${this.price}, Размер: ${this.size}"
-    }
 }

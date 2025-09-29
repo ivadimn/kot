@@ -1,33 +1,44 @@
 package profile
 
 class Person(
-   private val name : String,
+   val name : String,
    var surname : String,
-   private val height : Int,
-   private val weight : Int
+   val height : Int,
+   val weight : Int
 )
 {
     val fullName: String
         get() = "$name $surname"
 
-    var age : Int = 0
-        set(value) {
-            if (value > field)
-                field = value
-        }
-        get() {
-            println("О возрасте спрашивать неприлично")
-            return field
-        }
+    override fun equals(other: Any?): Boolean {
+        if (other === this) return true
+        if (other !is Person) return false
+        return this.name == other.name && this.surname == other.surname
+                && this.height == other.height && this.weight ==other.weight
+    }
+
+    override fun toString(): String {
+        return "Имя: $fullName, Рост: $height, Вес: $weight"
+    }
+
+
     fun sayHello() {
         println("Привет! Меня зовут $name")
     }
 
     fun printInfo() {
-        println("Имя: $fullName, Возраст: $age, Рост: $height, Вес: $weight")
+        this.toString()
     }
 
     fun run() {
         println("Running Running Running...")
+    }
+
+    override fun hashCode(): Int {
+        var result = height
+        result = 31 * result + weight
+        result = 31 * result + name.hashCode()
+        result = 31 * result + surname.hashCode()
+        return result
     }
 }

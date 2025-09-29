@@ -19,4 +19,9 @@ abstract class Employee(
         return "Должность: ${this.position} Табельный номер: ${this.id}, " +
                 "Имя: ${this.name}, Возраст: ${this.age} Зарплата: ${this.salary}"
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (other !is Employee) return false
+        return this.id == other.id && this.name == other.name && this.age == other.age
+    }
 }
