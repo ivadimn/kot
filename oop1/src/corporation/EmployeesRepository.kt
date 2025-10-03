@@ -33,6 +33,22 @@ object EmployeesRepository {
         return employees
     }
 
+    fun findAssistant() : Assistant? {
+        for (employee in employees) {
+            if (employee is Assistant)
+                return employee
+        }
+        return null
+    }
+
+    fun findDirector() : Director? {
+        for (employee in employees) {
+            if (employee is Director)
+                return employee
+        }
+        return null
+    }
+
     fun fireEmployee(id: Int) {
         for (employee in _employees) {
             if (employee.id == id) {

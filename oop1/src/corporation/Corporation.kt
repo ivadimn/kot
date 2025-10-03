@@ -2,16 +2,12 @@ package corporation
 
 fun main() {
 
-    val accountant = Accountant(4, "Elvira", 50)
-    //println(accountant)
-    accountant.work()
+    val repository = EmployeesRepository
+    val assistant = repository.findAssistant()
+    assistant?.printInfo()
 
-//    val employees = accountant.loadAllEmployees()
-//
-//    for (employee in employees) {
-//        if (employee is Supplier)
-//            employee.supply()
-//        if (employee is Cleaner)
-//            employee.clean()
-//    }
+    val director = repository.findDirector()
+    director?.printInfo()
+    if (assistant != null)
+        director?.takeCoffee(assistant)
 }
