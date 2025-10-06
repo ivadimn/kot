@@ -4,23 +4,11 @@ package shop
 fun main() {
     val products = ProductRepository.items
 
-    var filtered = filter(products, object : Condition {
-       override fun isSuitable(product: ProductCard): Boolean {
-            return product.price > 500
-        }
-    })
+    var filtered = filter(products, {product: ProductCard -> product.price > 500})
 
-    filtered = filter(filtered, object : Condition {
-        override fun isSuitable(product: ProductCard): Boolean {
-            return product.rating > 4
-        }
-    })
+    filtered = filter(filtered, {product: ProductCard -> product.rating > 4})
 
-    filtered = filter(filtered, object : Condition {
-        override fun isSuitable(product: ProductCard): Boolean {
-            return product.category == ProductCategory.SPORTS
-        }
-    })
+    filtered = filter(filtered) { product: ProductCard -> product.category == ProductCategory.SPORTS }
 
     for (product in filtered)
         //cats.add(product.category)
@@ -30,10 +18,10 @@ fun main() {
 //        println(cat)
 
 }
-fun filter(products: List<ProductCard>, condition: Condition) : List<ProductCard>{
+fun filter(products: List<ProductCard>, isSuitable: (ProductCard) -> Boolean) : List<ProductCard>{
     val list = mutableListOf<ProductCard>()
     for (product in products) {
-        if (condition.isSuitable(product))
+        if (isSuitable(product))
             list.add(product)
     }
     return list
