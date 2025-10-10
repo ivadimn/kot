@@ -2,23 +2,13 @@ package profile
 
 
 fun main() {
-    val persons = PersonRepository.items
-    var filtered = filter1(persons)
-    filtered = filter(filtered, StartWithA())
-    for (person in filtered)
-    //cats.add(product.category)
-        println(person)
+    val persons = PersonRepository.items.filter { it.age in 26..<30 }
+        .sortedBy { it.firstName }
+    persons.myForEach { println(it) }
 }
 
-fun filter(persons : List<Person>, condition: Condidtion) : List<Person>{
-    val list = mutableListOf<Person>()
-    for (person in persons) {
-        if (condition.isSuitable(person))
-            list.add(person)
+inline fun <T> Iterable<T>.myForEach(  operation : (T) -> Unit) {
+    for (item in this) {
+        operation(item)
     }
-    return  list
-}
-
-fun filter1(persons: List<Person>) : List<Person> {
-    return persons.filter {it.age > 25}
 }
