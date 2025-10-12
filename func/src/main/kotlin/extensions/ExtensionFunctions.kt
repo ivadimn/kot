@@ -16,3 +16,9 @@ fun  <T, R> Iterable<T>.transform( operation: (T) -> R ): List<R> {
     }
     return result
 }
+
+inline fun <T> Iterable<T>.myForEach(  operation : (T) -> Unit) {
+    for (item in this) {
+        operation(item)
+    }
+}

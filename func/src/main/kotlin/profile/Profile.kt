@@ -1,14 +1,16 @@
 package profile
 
+import extensions.myForEach
+
 
 fun main() {
-    val persons = PersonRepository.items.filter { it.age in 26..<30 }
-        .sortedBy { it.firstName }
-    persons.myForEach { println(it) }
+    val persons = PersonRepository.items
+    showEmail(persons)
 }
 
-inline fun <T> Iterable<T>.myForEach(  operation : (T) -> Unit) {
-    for (item in this) {
-        operation(item)
-    }
+fun showEmail(persons: List<Person>) {
+    print("Введите id пользователя: ")
+    val id = readln().toInt()
+    val person = persons.find { it.id == id }
+    person?.let { println(it.email) } ?: println("Пользователь не найден")
 }
