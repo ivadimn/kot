@@ -22,3 +22,7 @@ inline fun <T> Iterable<T>.myForEach(  operation : (T) -> Unit) {
         operation(item)
     }
 }
+fun <T> T.myAlso(operation: () -> Unit) : T {
+    operation()
+    return this
+}

@@ -8,14 +8,27 @@ package test
 //Вернёт итоговый список строк, который будет отображён в пользовательском интерфейсе.
 
 fun main() {
-    val products = listOf(
-        Product(1, "Laptop", 999.99, "Electronics"),
-        Product(2, "Notebook", 12.99, "Books"),
-        Product(3, "Tablet", 299.99, "Electronics"),
-        Product(4, "Novel", 15.49, "Books"),
-        Product(5, "Pen", 2.99, "Stationery")
-    )
-    processProductsForUI(products).forEach { println(it) }
+    val contacts = mutableMapOf<String, String>(
+        Pair("vadim", "+79992125549"),
+        Pair("anna", "+7165482443"),
+        Pair("pavel", "+79031572353"),
+        Pair("semen", "+79312076390")
+        )
+    print("Введите имя: ")
+    val name = readln()
+    print("Введите телефон: ")
+    val phone = readln()
+    contacts[name] = phone
+    showContacts(contacts)
+}
+
+fun showContacts(contacts : Map<String, String>) {
+    while (true) {
+        print("Введите имя: ")
+        val name = readln()
+        if (name == "0") break
+        contacts[name]?.let { println(it)} ?: println("Контакт не найден")
+    }
 }
 
 fun processProductsForUI(products: List<Product>): List<String> {
@@ -27,4 +40,19 @@ fun processProductsForUI(products: List<Product>): List<String> {
 
 }
 
+fun processStrings(strings: List<String>): List<String> {
+    return strings.also {println("Исходный список: $it") }
+        .filter { it.isNotBlank() }
+        .also { println("Этап 1: Осталось ${it.size} непустых строк")}
+        .map { it.trim() }                        // Убираем лишние пробелы
+        .filter { it.length > 3 }
+        .also {  println("Этап 2: Строки длиной более 3 символов: $it") }
+        .sortedBy { it.length }  // Сортируем по длине
+        .also { println("Этап 3: Первые 3 строки после сортировки: ${it.take(3)}") }
+        .map { it.uppercase() }       // Преобразуем в верхний регистр
+        .also { println("Этап 4: Все строки в верхнем регистре: $it") }
+        .distinct()                               // Убираем дубликаты
+        .take(5)                              // Берём первые 5 строк
+        .also { println("Этап 5: Итоговый результат: $it") }
+}
 
