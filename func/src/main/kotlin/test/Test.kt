@@ -1,25 +1,44 @@
 package test
 
-//Исключит из списка продукты, у которых цена меньше 100.
-//Оставит только продукты из категорий "Electronics" или "Books".
-//Отсортирует оставшиеся продукты по цене в порядке возрастания.
-//Преобразует каждый продукт в строку формата:
-//"Product ID: <id> | Name: <name> | Price: $<price>".
-//Вернёт итоговый список строк, который будет отображён в пользовательском интерфейсе.
+import extensions.myWidth
+import extensions.transformValues
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+
+@Serializable
+data class User(
+    @SerialName("id") val id: Int,
+    @SerialName("name") val name: String,
+    @SerialName("email") val email: String,
+    @SerialName("age") val age: Int,
+    @SerialName("is_active") val isActive: Boolean,
+    @SerialName("address") val address: String,
+    @SerialName("phone") val phone: String,
+    @SerialName("created_at") val createdAt: String,
+    @SerialName("updated_at") val updatedAt: String,
+    @SerialName("role") val role: String
+)
 
 fun main() {
-    val contacts = mutableMapOf<String, String>(
-        Pair("vadim", "+79992125549"),
-        Pair("anna", "+7165482443"),
-        Pair("pavel", "+79031572353"),
-        Pair("semen", "+79312076390")
-        )
-    print("Введите имя: ")
-    val name = readln()
-    print("Введите телефон: ")
-    val phone = readln()
-    contacts[name] = phone
-    showContacts(contacts)
+
+    myWidth(mutableListOf<Int>()) {
+        while (true) {
+            print("Enter number or 0 to exit: ")
+            val number = readln().toInt().takeIf { it != 0 } ?: break
+            add(number)
+        }
+        println("Max: ${max()}")
+        println("Min: ${min()}")
+        this
+    }.forEach { println(it) }
+
+}
+
+
+
+fun usersToMap(users: List<User>): Map<Int, User> {
+    // Реализуйте функцию здесь
+    return users.associate { it.id to it }
 }
 
 fun showContacts(contacts : Map<String, String>) {
