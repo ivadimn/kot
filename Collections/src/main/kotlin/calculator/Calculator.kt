@@ -5,4 +5,6 @@ class Calculator {
         return a + b;
     }
 
+    fun sub
+
 }
