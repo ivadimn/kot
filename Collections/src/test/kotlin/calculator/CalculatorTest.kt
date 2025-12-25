@@ -15,20 +15,52 @@ class CalculatorTest {
     }
 
     @Test
-    fun `When 50 add to 100 then 150`() {
-        val result = calculator.sum(100, 50)
-        val expected = 150
+    fun `When 11 sub from 31 then 20`() {
+        val result = calculator.sub(31, 11)
+        val expected = 20
         assertEquals(expected, result)
     }
 
     @Test
-    fun test() {
-        var number = 0.0
-        repeat(100) {
-            number += 0.01
-        }
-        val expected = 1.0
-        assertEquals(expected, number, 0.001)
+    fun `When 10 sub from 5 then -5`() {
+        val result = calculator.sub(5, 10)
+        val expected = -5
+        assertEquals(expected, result)
+    }
+
+    @Test
+    fun `When 10 mul to 7 then 70`() {
+        val result = calculator.mul(10, 7)
+        val expected = 70
+        assertEquals(expected, result)
+    }
+
+    @Test
+    fun `When 10 mul to -7 then 70`() {
+        val result = calculator.mul(10, -7)
+        val expected = -70
+        assertEquals(expected, result)
+    }
+
+    @Test
+    fun `When 20 div on 4 then 5`() {
+        val result = calculator.div(20, 4)
+        val expected = 5
+        assertEquals(expected, result)
+    }
+
+    @Test
+    fun `When 15 div on 10 then 1`() {
+        val result = calculator.div(15, 10)
+        val expected = 1
+        assertEquals(expected, result)
+    }
+
+    @Test
+    fun `When 50 add to 100 then 150`() {
+        val result = calculator.sum(100, 50)
+        val expected = 150
+        assertEquals(expected, result)
     }
 
 }
