@@ -1,12 +1,19 @@
 package collections
 
+
 fun main() {
-    val numbers = mutableListOf<Int>()
-    while (true) {
-        val number = readln().toInt()
-        if (number == 0)
-            break
-        numbers.add(number)
+    val numbers = hashSetOf<Int>()
+    repeat(1000) {
+        numbers.add(it)
     }
-    numbers.forEach(::println)
+
+//    val iterator = numbers.iterator()
+//    while (iterator.hasNext()) {
+//        val next = iterator.next()
+//        println(next)
+//    }
+
+    for (number in numbers) {
+        println(number)
+    }
 }
