@@ -2,9 +2,9 @@ package collections
 
 
 fun main() {
-    val numbers = hashSetOf<Int>()
-    repeat(1000) {
-        numbers.add(it)
+    val numbers = MyHashSet<Int>()
+    repeat(50) {
+        numbers.add(it + 9)
     }
 
 //    val iterator = numbers.iterator()

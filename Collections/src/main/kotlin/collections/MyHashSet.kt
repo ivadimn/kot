@@ -124,7 +124,7 @@ class MyHashSet<T> : MyMutableSet<T> {
             var nextIndex = 0
 
             override fun hasNext(): Boolean {
-                return nextIndex < elements.size
+                return nextIndex < size
             }
 
             override fun next(): T {
