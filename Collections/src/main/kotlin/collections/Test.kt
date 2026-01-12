@@ -4,8 +4,9 @@ package collections
 fun main() {
     val numbers = MyHashSet<Int>()
     repeat(50) {
-        numbers.add(it + 9)
+        numbers.add(it)
     }
+    numbers.elements.forEach(::println)
 
 //    val iterator = numbers.iterator()
 //    while (iterator.hasNext()) {

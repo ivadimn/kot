@@ -27,9 +27,9 @@ class MyHashSet<T> : MyMutableSet<T> {
     }
 
     override fun add(element: T): Boolean {
-        if (size >= elements.size * LOAD_FACTOR) {
-            increaseArray()
-        }
+//        if (size >= elements.size * LOAD_FACTOR) {
+//            increaseArray()
+//        }
 
         return add(element, elements).also { added ->
             if (added) size++
@@ -123,19 +123,30 @@ class MyHashSet<T> : MyMutableSet<T> {
 
             var nextIndex = 0
 
+
+            val array = arrayOfNulls<Node<T>>(size)
+
+            init {
+                var index = 0
+                var node: Node<T>? = null
+                for (i in 0 until elements.size) {
+                    if (elements[i] != null) {
+                        array[index++] = elements[i]
+                        node = elements[i]?.next
+                        while (node != null) {
+                            array[index++] = node
+                            node = node.next
+                        }
+                    }
+                }
+            }
+
             override fun hasNext(): Boolean {
                 return nextIndex < size
             }
 
             override fun next(): T {
-                var item = elements[nextIndex]
-
-                while (item == null) {
-                    nextIndex++
-                    item = elements[nextIndex]
-                }
-                nextIndex++
-                return item.item
+                return array[nextIndex++]?.item!! as T
             }
         }
     }
