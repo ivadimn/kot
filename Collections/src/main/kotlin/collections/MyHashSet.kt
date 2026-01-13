@@ -122,31 +122,39 @@ class MyHashSet<T> : MyMutableSet<T> {
         return object : Iterator<T> {
 
             var nextIndex = 0
+            var nodeIndex = 0
+            var node = elements[nextIndex]
 
-
-            val array = arrayOfNulls<Node<T>>(size)
-
-            init {
-                var index = 0
-                var node: Node<T>? = null
-                for (i in 0 until elements.size) {
-                    if (elements[i] != null) {
-                        array[index++] = elements[i]
-                        node = elements[i]?.next
-                        while (node != null) {
-                            array[index++] = node
-                            node = node.next
-                        }
-                    }
-                }
-            }
+//            val array = arrayOfNulls<Node<T>>(size)
+//
+//            init {
+//                var index = 0
+//                var node: Node<T>? = null
+//                for (i in 0 until elements.size) {
+//                    if (elements[i] != null) {
+//                        array[index++] = elements[i]
+//                        node = elements[i]?.next
+//                        while (node != null) {
+//                            array[index++] = node
+//                            node = node.next
+//                        }
+//                    }
+//                }
+//            }
 
             override fun hasNext(): Boolean {
-                return nextIndex < size
+                return nodeIndex < size
             }
 
             override fun next(): T {
-                return array[nextIndex++]?.item!! as T
+                while (node == null) {
+                    node = elements[++nextIndex]
+                }
+                //return array[nextIndex++]?.item!! as T
+               return node.also {
+                   nodeIndex++
+                   node = node?.next
+               }?.item as T
             }
         }
     }
