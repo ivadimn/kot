@@ -5,6 +5,8 @@ class MyLinkedList<T> : MyMutableList<T> {
     private var first: Node<T>? = null
     private var last: Node<T>? = null
 
+    private var  modCount = 0
+
     override var size: Int = 0
         private set
 
@@ -143,6 +145,7 @@ class MyLinkedList<T> : MyMutableList<T> {
     override fun iterator(): Iterator<T> {
         return object : Iterator<T> {
 
+            private var currentModCount = modCount
             var nextNode: Node<T>? = first
 
             override fun hasNext(): Boolean {

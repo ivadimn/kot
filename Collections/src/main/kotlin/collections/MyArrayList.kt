@@ -4,11 +4,13 @@ class MyArrayList<T>(initialCapacity: Int = INITIAL_CAPACITY) : MyMutableList<T>
 
 
     private var elements = arrayOfNulls<Any>(initialCapacity)
+    private var  modCount = 0
 
     override var size: Int = 0
         private set
 
     override fun add(element: T) : Boolean {
+        modCount++
         growIfNeeded()
         elements[size] = element
         size++
@@ -29,6 +31,7 @@ class MyArrayList<T>(initialCapacity: Int = INITIAL_CAPACITY) : MyMutableList<T>
 
     override fun add(index: Int, element: T) :Boolean {
         checkIndexForAdding(index)
+        modCount++
         growIfNeeded()
         System.arraycopy(elements, index, elements, index + 1, size - index)
         elements[index] = element
@@ -43,6 +46,7 @@ class MyArrayList<T>(initialCapacity: Int = INITIAL_CAPACITY) : MyMutableList<T>
 
     override fun removeAt(index: Int) {
         checkIndex(index)
+        modCount++
         System.arraycopy(elements, index + 1, elements, index, size - index - 1)
         size--
         elements[size] = null
@@ -62,6 +66,7 @@ class MyArrayList<T>(initialCapacity: Int = INITIAL_CAPACITY) : MyMutableList<T>
     }
 
     override fun clear() {
+        modCount++
         elements = arrayOfNulls<Any>(INITIAL_CAPACITY)
         size = 0
     }
@@ -90,6 +95,7 @@ class MyArrayList<T>(initialCapacity: Int = INITIAL_CAPACITY) : MyMutableList<T>
     override fun iterator(): Iterator<T> {
         return object : Iterator<T> {
 
+            private var currentModCount = modCount
             private var nextIndex = 0
 
             override fun hasNext(): Boolean {
@@ -97,6 +103,7 @@ class MyArrayList<T>(initialCapacity: Int = INITIAL_CAPACITY) : MyMutableList<T>
             }
 
             override fun next(): T {
+                if (currentModCount != modCount) throw ConcurrentModificationException()
                 return elements[nextIndex++] as T
             }
         }

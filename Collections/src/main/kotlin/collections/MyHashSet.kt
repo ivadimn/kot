@@ -6,6 +6,7 @@ import kotlin.math.abs
 class MyHashSet<T> : MyMutableSet<T> {
 
     public var elements = arrayOfNulls<Node<T>>(INITIAL_CAPACITY)
+    private var  modCount = 0
 
     override var size: Int = 0
         private set
