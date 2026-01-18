@@ -1,11 +1,11 @@
 package collections
 
-interface MyMutableCollection<T> : Iterable<T> {
+interface MyMutableCollection<T> : MyCollection<T>,  MutableIterable<T> {
 
-    val size : Int
+    override val size : Int
 
     fun add(element : T) : Boolean
     fun remove(element : T)
     fun clear()
-    fun contains(element : T) : Boolean
+    override fun contains(element : T) : Boolean
 }

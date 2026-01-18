@@ -92,8 +92,8 @@ class MyArrayList<T>(initialCapacity: Int = INITIAL_CAPACITY) : MyMutableList<T>
         }
     }
 
-    override fun iterator(): Iterator<T> {
-        return object : Iterator<T> {
+    override fun iterator(): MutableIterator<T> {
+        return object : MutableIterator<T> {
 
             private var currentModCount = modCount
             private var nextIndex = 0
@@ -105,6 +105,10 @@ class MyArrayList<T>(initialCapacity: Int = INITIAL_CAPACITY) : MyMutableList<T>
             override fun next(): T {
                 if (currentModCount != modCount) throw ConcurrentModificationException()
                 return elements[nextIndex++] as T
+            }
+
+            override fun remove() {
+                TODO("Not yet implemented")
             }
         }
     }

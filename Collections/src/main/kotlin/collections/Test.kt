@@ -2,13 +2,12 @@ package collections
 
 
 fun main() {
-    val numbers = MyArrayList<Int>()
-    repeat(50) {
-        numbers.add(it)
-    }
+    val map = MyHashMap<String, Int>()
 
-    for (number in numbers) {
-        println(number)
-        //numbers.add(100)
+    repeat(50) {
+        map.put("key$it", it)
     }
+    map.keys.forEach(::println)
+
+
 }
