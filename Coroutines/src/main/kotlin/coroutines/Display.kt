@@ -1,7 +1,10 @@
-package callbacks
+package coroutines
 
 import entities.Author
 import entities.Book
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.awt.BorderLayout
 import java.awt.Dimension
 import javax.swing.JButton
@@ -19,20 +22,19 @@ object Display {
     }
     private val loadButton = JButton("Load Book").apply {
         addActionListener {
-            isEnabled = false
-            infoArea.text = "Loading book information...\n"
-            loadBook{ book ->
+            GlobalScope.launch {
+                isEnabled = false
+                infoArea.text = "Loading book information...\n"
+                val book = loadBook()
                 infoArea.append("Book: ${book.title}\nYear: ${book.year}\nGenre: ${book.genre}\n")
                 infoArea.append("Loading author information...\n")
-                loadAuthor(book) {author ->
-                    infoArea.append("Author: ${author.name}\nBiography: ${author.bio}\n")
-                    isEnabled = true
-                }
-
+                val author = loadAuthor(book)
+                infoArea.append("Author: ${author.name}\nBiography: ${author.bio}\n")
+                isEnabled = true
             }
-
         }
     }
+
     private val timerLabel = JLabel("Time: 00:00")
     private val topPanel = JPanel(BorderLayout()).apply {
         add(timerLabel, BorderLayout.WEST)
@@ -52,18 +54,14 @@ object Display {
         startTimer()
     }
 
-    private fun loadBook(callback: (Book)-> Unit) {
-        thread {
-            Thread.sleep(3000)
-            callback(Book("1984", 1949, "Dystopia"))
-        }
+    private suspend fun loadBook() : Book {
+        delay(3000)
+        return Book("1984", 1949, "Dystopia")
     }
 
-    private fun loadAuthor(book: Book, callback: (Author)-> Unit) {
-        thread {
-            Thread.sleep(3000)
-            callback(Author("George Orwell", "British writer and journalist"))
-        }
+    private suspend fun loadAuthor(book: Book) : Author {
+        delay(3000)
+        return Author("George Orwell", "British writer and journalist")
     }
 
     private fun startTimer() {
