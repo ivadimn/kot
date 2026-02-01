@@ -2,11 +2,19 @@ package coroutines
 
 import entities.Author
 import entities.Book
+import kotlinx.coroutines.CoroutineName
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.awt.BorderLayout
 import java.awt.Dimension
+import java.awt.event.WindowAdapter
+import java.awt.event.WindowEvent
+import java.awt.event.WindowListener
 import javax.swing.JButton
 import javax.swing.JFrame
 import javax.swing.JLabel
@@ -17,18 +25,23 @@ import kotlin.concurrent.thread
 
 
 object Display {
+
+    private val scope = CoroutineScope(CoroutineName("My coroutine") + Dispatchers.Unconfined)
+
     private val infoArea = JTextArea().apply {
         isEditable = false
     }
     private val loadButton = JButton("Load Book").apply {
         addActionListener {
-            GlobalScope.launch {
+            scope.launch {
                 isEnabled = false
                 infoArea.text = "Loading book information...\n"
                 val book = loadBook()
+                println("Loaded $book")
                 infoArea.append("Book: ${book.title}\nYear: ${book.year}\nGenre: ${book.genre}\n")
                 infoArea.append("Loading author information...\n")
                 val author = loadAuthor(book)
+                println("Loaded $author")
                 infoArea.append("Author: ${author.name}\nBiography: ${author.bio}\n")
                 isEnabled = true
             }
@@ -46,7 +59,11 @@ object Display {
         add(topPanel, BorderLayout.NORTH)
         add(JScrollPane(infoArea), BorderLayout.CENTER)
         size = Dimension(800, 600)
-
+        addWindowListener(object : WindowAdapter() {
+            override fun windowClosing(e: WindowEvent?) {
+                scope.cancel()
+            }
+        })
     }
 
     fun show() {
@@ -54,14 +71,28 @@ object Display {
         startTimer()
     }
 
-    private suspend fun loadBook() : Book {
-        delay(3000)
-        return Book("1984", 1949, "Dystopia")
+    private fun longOperation() {
+        mutableListOf<Int>().apply {
+            repeat(300_000) {
+                add(0, it)
+            }
+        }
+    }
+
+    private  suspend fun loadBook() : Book {
+        return withContext(Dispatchers.Default) {
+            longOperation()
+            Book("1984", 1949, "Dystopia")
+        }
+
     }
 
     private suspend fun loadAuthor(book: Book) : Author {
-        delay(3000)
-        return Author("George Orwell", "British writer and journalist")
+        return withContext(Dispatchers.Default) {
+            longOperation()
+            Author("George Orwell", "British writer and journalist")
+        }
+
     }
 
     private fun startTimer() {
