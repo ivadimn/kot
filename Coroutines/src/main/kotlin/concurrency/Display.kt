@@ -1,4 +1,4 @@
-package coroutines
+package concurrency
 
 import entities.Author
 import entities.Book
@@ -6,9 +6,11 @@ import kotlinx.coroutines.CoroutineName
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.asCoroutineDispatcher
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.awt.BorderLayout
@@ -36,16 +38,17 @@ object Display {
     }
     private val loadButton = JButton("Load Book").apply {
         addActionListener {
+            isEnabled = false
+            infoArea.text = "Loading book information...\n"
+            val jobs = mutableListOf<Job>()
+            repeat(10) {
+                scope.launch {
+                    val book = loadBook()
+                    infoArea.append("Book $it: ${book.title}\nYear: ${book.year}\nGenre: ${book.genre}\n\n")
+                }.also { jobs.add(it) }
+            }
             scope.launch {
-                isEnabled = false
-                infoArea.text = "Loading book information...\n"
-                val book = loadBook()
-                println("Loaded $book")
-                infoArea.append("Book: ${book.title}\nYear: ${book.year}\nGenre: ${book.genre}\n")
-                infoArea.append("Loading author information...\n")
-                val author = loadAuthor(book)
-                println("Loaded $author")
-                infoArea.append("Author: ${author.name}\nBiography: ${author.bio}\n")
+                jobs.joinAll()
                 isEnabled = true
             }
         }
@@ -99,13 +102,13 @@ object Display {
     }
 
     private fun startTimer() {
-        thread {
+        scope.launch {
             var totalSeconds = 0
             while (true) {
                 val minutes = totalSeconds / 60
                 val seconds = totalSeconds % 60
                 timerLabel.text = String.format("Time: %02d:%02d", minutes, seconds)
-                Thread.sleep(1000)
+                delay(1000)
                 totalSeconds++
             }
         }
