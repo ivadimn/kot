@@ -4,10 +4,13 @@ import entities.Author
 import entities.Book
 import kotlinx.coroutines.CoroutineName
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.asCoroutineDispatcher
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.joinAll
@@ -25,6 +28,7 @@ import javax.swing.JLabel
 import javax.swing.JPanel
 import javax.swing.JScrollPane
 import javax.swing.JTextArea
+import javax.swing.WindowConstants.EXIT_ON_CLOSE
 import kotlin.concurrent.thread
 
 
@@ -40,15 +44,17 @@ object Display {
         addActionListener {
             isEnabled = false
             infoArea.text = "Loading book information...\n"
-            val jobs = mutableListOf<Job>()
+            val jobs = mutableListOf<Deferred<Book>>()
             repeat(10) {
-                scope.launch {
+                scope.async {
                     val book = loadBook()
                     infoArea.append("Book $it: ${book.title}\nYear: ${book.year}\nGenre: ${book.genre}\n\n")
-                }.also { jobs.add(it) }
+                    book
+                }.let { jobs.add(it) }
             }
             scope.launch {
-                jobs.joinAll()
+                val books = jobs.awaitAll()
+                println(books.joinToString(", "))
                 isEnabled = true
             }
         }
@@ -65,6 +71,7 @@ object Display {
         add(topPanel, BorderLayout.NORTH)
         add(JScrollPane(infoArea), BorderLayout.CENTER)
         size = Dimension(800, 600)
+        defaultCloseOperation = EXIT_ON_CLOSE
         addWindowListener(object : WindowAdapter() {
             override fun windowClosing(e: WindowEvent?) {
                 scope.cancel()

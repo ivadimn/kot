@@ -23,6 +23,7 @@ import javax.swing.JLabel
 import javax.swing.JPanel
 import javax.swing.JScrollPane
 import javax.swing.JTextArea
+import javax.swing.WindowConstants.EXIT_ON_CLOSE
 import kotlin.concurrent.thread
 
 
@@ -62,6 +63,7 @@ object Display {
         add(topPanel, BorderLayout.NORTH)
         add(JScrollPane(infoArea), BorderLayout.CENTER)
         size = Dimension(800, 600)
+        defaultCloseOperation = EXIT_ON_CLOSE
         addWindowListener(object : WindowAdapter() {
             override fun windowClosing(e: WindowEvent?) {
                 scope.cancel()
